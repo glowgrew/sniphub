@@ -16,6 +16,7 @@ class Snippet extends Model
         'category_id',
         'user_id',
         'expiration_time',
+        'unique_id',
     ];
 
     public function category(): BelongsTo

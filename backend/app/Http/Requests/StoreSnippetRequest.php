@@ -24,9 +24,10 @@ class StoreSnippetRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string'],
-            'content' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'user_id' => ['required', 'exists:users,id'],
+            'body' => ['required', 'string'],
+            'categoryId' => ['required', 'exists:categories,id'],
+            'userId' => ['required', 'exists:users,id'],
+            'expirationTime' => ['required', 'date'],
         ];
     }
 }

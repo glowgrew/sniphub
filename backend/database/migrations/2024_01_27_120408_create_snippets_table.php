@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('category_id')->index()->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->index()->constrained()->cascadeOnDelete();
             $table->timestamp('expiration_time')->nullable();
+            $table->string('unique_id')->unique();
             $table->timestamps();
         });
     }

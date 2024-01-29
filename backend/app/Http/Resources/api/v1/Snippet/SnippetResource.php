@@ -1,10 +1,9 @@
 <?php
 
-namespace app\Http\Resources\api\v1\Snippet;
+namespace App\Http\Resources\api\v1\Snippet;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
 class SnippetResource extends JsonResource
 {
     /**
@@ -14,6 +13,15 @@ class SnippetResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+            'categoryId' => $this->category_id,
+            'userId' => $this->user_id,
+            'uniqueId' => $this->unique_id,
+            'expirationTime' => $this->expiration_time,
+            'createdAt' => $this->created_at,
+        ];
     }
 }

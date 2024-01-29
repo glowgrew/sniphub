@@ -23,7 +23,8 @@ class SnippetFactory extends Factory
             'body' => $this->faker->text(),
             'category_id' => Category::query()->inRandomOrder()->first()->id,
             'user_id' => User::query()->inRandomOrder()->first()->id,
-            'expiration_time' => now()->addHours(24),
+            'expiration_time' => now()->addSeconds(10),
+            'unique_id' => $this->faker->uuid(),
 
         ];
     }

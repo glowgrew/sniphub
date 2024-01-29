@@ -24,9 +24,10 @@ class UpdateSnippetRequest extends FormRequest
     {
         return [
             'title' => ['sometimes', 'string'],
-            'content' => ['sometimes', 'string'],
+            'body' => ['sometimes', 'string'],
             'category_id' => ['sometimes', 'exists:categories,id'],
             'user_id' => ['sometimes', 'exists:users,id'],
+            'expiration_time' => ['date'],
         ];
     }
 }

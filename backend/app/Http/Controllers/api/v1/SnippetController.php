@@ -1,48 +1,41 @@
 <?php
 
-namespace app\Http\Controllers\api\v1;
+namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSnippetRequest;
 use App\Http\Requests\UpdateSnippetRequest;
+use App\Http\Resources\api\v1\Snippet\SnippetResource;
 use App\Models\Snippet;
+use App\Services\SnippetService;
+use Hashids\Hashids;
 
 class SnippetController extends Controller
 {
-    public function index()
-    {
+    protected SnippetService $snippetService;
 
+    public function __construct(SnippetService $snippetService)
+    {
+        $this->snippetService = $snippetService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSnippetRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        return new SnippetResource($this->snippetService->createSnippet($data));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Snippet $snippet)
+    public function show($unique_id)
     {
-        //
+        return new SnippetResource($this->snippetService->showSnippet($unique_id));
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateSnippetRequest $request, Snippet $snippet)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Snippet $snippet)
     {
         //
