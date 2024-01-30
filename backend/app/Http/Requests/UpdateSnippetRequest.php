@@ -12,7 +12,7 @@ class UpdateSnippetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,9 +25,9 @@ class UpdateSnippetRequest extends FormRequest
         return [
             'title' => ['sometimes', 'string'],
             'body' => ['sometimes', 'string'],
-            'category_id' => ['sometimes', 'exists:categories,id'],
-            'user_id' => ['sometimes', 'exists:users,id'],
-            'expiration_time' => ['date'],
+            'categoryId' => ['sometimes', 'exists:categories,id'],
+            'userId' => ['sometimes', 'exists:users,id'],
+            'expirationTime' => ['sometimes', 'date'],
         ];
     }
 }

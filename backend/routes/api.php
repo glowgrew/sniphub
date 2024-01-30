@@ -19,7 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::controller(SnippetController::class)->group(function () {
    Route::post('/snippets', 'store');
    Route::get('/snippets/{unique_id}', 'show');
+   Route::patch('/snippets/{unique_id}', 'update');
 });

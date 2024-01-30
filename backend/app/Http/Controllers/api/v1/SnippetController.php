@@ -31,9 +31,11 @@ class SnippetController extends Controller
         return new SnippetResource($this->snippetService->showSnippet($unique_id));
     }
 
-    public function update(UpdateSnippetRequest $request, Snippet $snippet)
+    public function update(UpdateSnippetRequest $request, $unique_id)
     {
-        //
+        $data = $request->validated();
+
+        return new SnippetResource($this->snippetService->updateSnippet($data, $unique_id));
     }
 
     public function destroy(Snippet $snippet)
