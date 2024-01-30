@@ -44,4 +44,11 @@ class SnippetService
         $snippet->update($data);
         return $snippet;
     }
+
+    public function deleteSnippet($unique_id): JsonResponse
+    {
+        $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
+        $snippet->delete();
+        return response()->json(['message' => 'Snippet deleted successfully'], 200);
+    }
 }

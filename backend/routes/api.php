@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\v1\AuthController;
 use App\Http\Controllers\api\v1\SnippetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +20,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::controller(SnippetController::class)->group(function () {
+        Route::get('/snippets', 'index')->prefix('user');
+        Route::patch('/snippets/{unique_id}', 'update');
+        Route::delete('/snippets/{unique_id}', 'destroy');
+    });
+});
+
 
 Route::controller(SnippetController::class)->group(function () {
-   Route::post('/snippets', 'store');
-   Route::get('/snippets/{unique_id}', 'show');
-   Route::patch('/snippets/{unique_id}', 'update');
+
+    Route::get('/snippets/{unique_id}', 'show');
+    Route::post('/snippets', 'store');
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/register', 'register');
+    Route::get('/login', 'login');
 });

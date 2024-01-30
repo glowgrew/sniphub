@@ -13,7 +13,7 @@ class SnippetPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class SnippetPolicy
      */
     public function view(User $user, Snippet $snippet): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class SnippetPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class SnippetPolicy
      */
     public function update(User $user, Snippet $snippet): bool
     {
-        //
+        return $user->id === $snippet->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class SnippetPolicy
      */
     public function delete(User $user, Snippet $snippet): bool
     {
-        //
+        return $user->id === $snippet->user_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class SnippetPolicy
      */
     public function restore(User $user, Snippet $snippet): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class SnippetPolicy
      */
     public function forceDelete(User $user, Snippet $snippet): bool
     {
-        //
+        return false;
     }
 }

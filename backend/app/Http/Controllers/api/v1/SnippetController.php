@@ -5,10 +5,12 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSnippetRequest;
 use App\Http\Requests\UpdateSnippetRequest;
+use App\Http\Resources\api\v1\Snippet\SnippetCollection;
 use App\Http\Resources\api\v1\Snippet\SnippetResource;
 use App\Models\Snippet;
 use App\Services\SnippetService;
 use Hashids\Hashids;
+use Illuminate\Support\Facades\Auth;
 
 class SnippetController extends Controller
 {
@@ -17,6 +19,12 @@ class SnippetController extends Controller
     public function __construct(SnippetService $snippetService)
     {
         $this->snippetService = $snippetService;
+    }
+
+    public function index()
+    {
+        $user = auth()->user();
+        return new SnippetCollection($user->snippets);
     }
 
     public function store(StoreSnippetRequest $request)
@@ -34,12 +42,11 @@ class SnippetController extends Controller
     public function update(UpdateSnippetRequest $request, $unique_id)
     {
         $data = $request->validated();
-
         return new SnippetResource($this->snippetService->updateSnippet($data, $unique_id));
     }
 
-    public function destroy(Snippet $snippet)
+    public function destroy($unique_id)
     {
-        //
+        return $this->snippetService->deleteSnippet($unique_id);
     }
 }

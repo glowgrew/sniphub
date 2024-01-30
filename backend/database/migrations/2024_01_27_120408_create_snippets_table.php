@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('body');
-            $table->foreignId('category_id')->index()->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->index()->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->index()->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->index()->constrained()->cascadeOnDelete();
             $table->timestamp('expiration_time')->nullable();
             $table->string('unique_id')->unique();
             $table->timestamps();
