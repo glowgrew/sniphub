@@ -7,7 +7,6 @@ use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
 
 class SnippetService
 {
@@ -50,5 +49,21 @@ class SnippetService
         $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
         $snippet->delete();
         return response()->json(['message' => 'Snippet deleted successfully'], 200);
+    }
+
+    public function validate($request, $unique_id, $method)
+    {
+        if ($method === 'update') {
+            if ($request->user()->cannot('update', Snippet::query()->where('unique_id', $unique_id)->firstOrFail())) {
+                return false;
+            }
+            return true;
+        }
+        if ($method === 'delete') {
+            if ($request->user()->cannot('delete', Snippet::query()->where('unique_id', $unique_id)->firstOrFail())) {
+                return false;
+            }
+            return true;
+        }
     }
 }

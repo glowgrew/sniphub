@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(SnippetController::class)->group(function () {
-        Route::get('/snippets', 'index')->prefix('user');
+        Route::get('snippets', 'indexOfAuthUser');
         Route::patch('/snippets/{unique_id}', 'update');
         Route::delete('/snippets/{unique_id}', 'destroy');
     });
@@ -30,9 +30,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 Route::controller(SnippetController::class)->group(function () {
-
-    Route::get('/snippets/{unique_id}', 'show');
+    Route::get('u/{user}/snippets', 'index');
     Route::post('/snippets', 'store');
+    Route::get('/snippets/{unique_id}', 'show');
 });
 
 Route::controller(AuthController::class)->group(function () {

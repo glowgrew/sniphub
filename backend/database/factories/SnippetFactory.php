@@ -18,14 +18,14 @@ class SnippetFactory extends Factory
      */
     public function definition(): array
     {
+        $hashids = new Hashids();
         return [
             'title' => $this->faker->sentence(),
             'body' => $this->faker->text(),
             'category_id' => Category::query()->inRandomOrder()->first()->id,
             'user_id' => User::query()->inRandomOrder()->first()->id,
             'expiration_time' => now()->addSeconds(10),
-            'unique_id' => $this->faker->uuid(),
-
+            'unique_id' => $hashids->encode(random_int(0, 100000))
         ];
     }
 }
