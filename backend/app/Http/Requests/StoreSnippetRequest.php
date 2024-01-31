@@ -26,6 +26,7 @@ class StoreSnippetRequest extends FormRequest
             'title' => ['required', 'string'],
             'body' => ['required', 'string'],
             'categoryId' => ['required', 'exists:categories,id'],
+            'isPublic' => ['boolean', 'required'],
             'expirationTime' => ['required', 'date'],
         ];
     }

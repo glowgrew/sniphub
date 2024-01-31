@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
+use App\Http\Resources\api\v1\Snippet\SnippetResource;
 use App\Models\Snippet;
 use Hashids\Hashids;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 
 class SnippetService
@@ -17,31 +16,31 @@ class SnippetService
         $this->camelToSnakeService = $camelToSnakeService;
     }
 
-    public function createSnippet($data)
+    public function createSnippet($data): SnippetResource
     {
         $data = $this->camelToSnakeService->camelToSnake($data);
 
         $hashid = new Hashids('', 8);
         $data['unique_id'] = $hashid->encode(random_int(0, 100000));
-        return Snippet::query()->create($data);
+        return new SnippetResource(Snippet::query()->create($data));
     }
 
-    public function showSnippet($unique_id): Model|Builder|JsonResponse
+    public function showSnippet($unique_id): JsonResponse|SnippetResource
     {
         $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
-        if (!$snippet) {
-            return response()->json(['message' => 'Paste not found'], 404);
+        if (!$snippet || !$snippet->is_public) {
+            return response()->json(['message' => 'Paste not found or private'], 404);
         }
-        return $snippet;
+        return new SnippetResource($snippet);
     }
 
-    public function updateSnippet($data, $unique_id): Model|Builder
+    public function updateSnippet($data, $unique_id): SnippetResource
     {
         $data = $this->camelToSnakeService->camelToSnake($data);
 
         $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
         $snippet->update($data);
-        return $snippet;
+        return new SnippetResource($snippet);
     }
 
     public function deleteSnippet($unique_id): JsonResponse

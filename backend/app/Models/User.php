@@ -24,8 +24,18 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function snippets():HasMany {
-        return $this->hasMany(Snippet::class);
+    public function snippets(): HasMany
+    {
+        return $this->hasMany(Snippet::class)
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function publicSnippets()
+    {
+        return $this->snippets()
+            ->where('is_public', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     /**

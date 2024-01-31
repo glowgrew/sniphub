@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSnippetRequest;
 use App\Http\Requests\UpdateSnippetRequest;
 use App\Http\Resources\api\v1\Snippet\SnippetCollection;
-use App\Http\Resources\api\v1\Snippet\SnippetResource;
 use App\Models\User;
 use App\Services\SnippetService;
 use Illuminate\Http\Request;
@@ -22,7 +21,7 @@ class SnippetController extends Controller
 
     public function index(User $user)
     {
-        return new SnippetCollection($user->snippets);
+        return new SnippetCollection($user->publicSnippets());
     }
 
     public function indexOfAuthUser()
@@ -37,12 +36,12 @@ class SnippetController extends Controller
         if (auth('sanctum')->check()) {
             $data['user_id'] = auth('sanctum')->user()->id;
         }
-        return new SnippetResource($this->snippetService->createSnippet($data));
+        return $this->snippetService->createSnippet($data);
     }
 
     public function show($unique_id)
     {
-        return new SnippetResource($this->snippetService->showSnippet($unique_id));
+        return $this->snippetService->showSnippet($unique_id);
     }
 
     public function update(UpdateSnippetRequest $request, $unique_id)
@@ -51,7 +50,7 @@ class SnippetController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
         $data = $request->validated();
-        return new SnippetResource($this->snippetService->updateSnippet($data, $unique_id));
+        return $this->snippetService->updateSnippet($data, $unique_id);
     }
 
     public function destroy(Request $request, $unique_id)
