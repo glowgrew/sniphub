@@ -23,9 +23,9 @@ class StoreSnippetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
+            'title' => ['string'],
             'body' => ['required', 'string'],
-            'categoryId' => ['required', 'exists:categories,id'],
+            'categoryId' => ['exists:categories,id'],
             'isPublic' => ['boolean', 'required'],
             'expirationTime' => ['required', 'date'],
         ];

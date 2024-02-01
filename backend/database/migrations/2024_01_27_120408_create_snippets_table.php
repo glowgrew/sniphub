@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('snippets', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('body');
             $table->foreignId('category_id')->nullable()->index()->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->index()->constrained()->cascadeOnDelete();

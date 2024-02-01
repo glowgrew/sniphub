@@ -18,7 +18,10 @@ class SnippetResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
-            'categoryId' => $this->category_id,
+            'category' => [
+                'id' => $this->category_id,
+                'name' => $this->category->name
+            ],
             'userId' => $this->user_id,
             'isPublic' => $this->is_public,
             'uniqueId' => $this->unique_id,
