@@ -15,9 +15,17 @@ class Snippet extends Model
         'body',
         'category_id',
         'user_id',
+        'views',
+        'burn_after_read',
         'expiration_time',
         'unique_id',
         'is_public',
+    ];
+
+    protected $attributes = [
+        'views' => 0,
+        'burn_after_read' => false,
+        'is_public' => true,
     ];
 
     public function category(): BelongsTo

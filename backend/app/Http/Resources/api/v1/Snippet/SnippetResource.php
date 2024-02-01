@@ -18,11 +18,15 @@ class SnippetResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
-            'category' => [
-                'id' => $this->category_id,
-                'name' => $this->category->name
-            ],
+            'category' => $this->category
+                ? [
+                    'id' => $this->category->id,
+                    'name' => $this->category->name,
+                ]
+                : null,
             'userId' => $this->user_id,
+            'views' => $this->views,
+            'burnAfterRead' => $this->burn_after_read,
             'isPublic' => $this->is_public,
             'uniqueId' => $this->unique_id,
             'expirationTime' => $this->expiration_time,

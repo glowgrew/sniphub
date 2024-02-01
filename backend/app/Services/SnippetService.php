@@ -16,23 +16,35 @@ class SnippetService
         $this->camelToSnakeService = $camelToSnakeService;
     }
 
-    public function createSnippet($data): SnippetResource
+    public function createSnippet($data): SnippetResource|JsonResponse|array
     {
         $data = $this->camelToSnakeService->camelToSnake($data);
+        if (!array_key_exists('user_id', $data) && array_key_exists('is_public', $data)) {
+            return response()->json(['message' => 'To create a private paste, you must be logged in'], 403);
+        }
 
         $hashid = new Hashids('', 8);
         $data['unique_id'] = $hashid->encode(random_int(0, 100000));
-        return new SnippetResource(Snippet::query()->create($data));
+        $snippet = Snippet::query()->create($data);
+        return new SnippetResource($snippet);
     }
 
     public function showSnippet($unique_id): JsonResponse|SnippetResource
     {
         $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
-        if (!$snippet || !$snippet->is_public) {
+        if (!$snippet || (!$snippet->is_public && $snippet->user_id !== auth('sanctum')->id())) {
             return response()->json(['message' => 'Paste not found or private'], 404);
         }
+
+        if ($snippet->burn_after_read) {
+            $snippet->delete();
+        }
+
+        $snippet->increment('views');
+
         return new SnippetResource($snippet);
     }
+
 
     public function updateSnippet($data, $unique_id): SnippetResource
     {

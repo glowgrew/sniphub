@@ -19,17 +19,6 @@ class SnippetController extends Controller
         $this->snippetService = $snippetService;
     }
 
-    public function index(User $user)
-    {
-        return new SnippetCollection($user->publicSnippets());
-    }
-
-    public function indexOfAuthUser()
-    {
-        $user = auth('sanctum')->user();
-        return new SnippetCollection($user->snippets);
-    }
-
     public function store(StoreSnippetRequest $request)
     {
         $data = $request->validated();

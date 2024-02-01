@@ -22,6 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'views',
+    ];
+
+    protected $attributes = [
+        'views' => 0
     ];
 
     public function snippets(): HasMany
