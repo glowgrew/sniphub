@@ -28,9 +28,9 @@ class SnippetController extends Controller
         return $this->snippetService->createSnippet($data);
     }
 
-    public function show($unique_id)
+    public function show(Request $request, $unique_id)
     {
-        return $this->snippetService->showSnippet($unique_id);
+        return $this->snippetService->showSnippet($request, $unique_id);
     }
 
     public function update(UpdateSnippetRequest $request, $unique_id)

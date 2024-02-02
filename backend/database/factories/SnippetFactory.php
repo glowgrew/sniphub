@@ -26,6 +26,7 @@ class SnippetFactory extends Factory
             'category_id' => Category::query()->inRandomOrder()->first()->id,
             'user_id' => User::query()->inRandomOrder()->first()->id,
             'views' => $this->faker->numberBetween(0, 1000),
+            'password' =>  $this->faker->password(),
             'burn_after_read' => $this->faker->boolean(),
             'is_public' => $this->faker->boolean(),
             'expiration_time' => now()->addSeconds(10),

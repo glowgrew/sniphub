@@ -16,10 +16,12 @@ class Snippet extends Model
         'category_id',
         'user_id',
         'views',
+        'password',
         'burn_after_read',
         'expiration_time',
         'unique_id',
         'is_public',
+        'created_at',
     ];
 
     protected $attributes = [

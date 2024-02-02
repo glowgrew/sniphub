@@ -29,9 +29,16 @@ class SnippetService
         return new SnippetResource($snippet);
     }
 
-    public function showSnippet($unique_id): JsonResponse|SnippetResource
+    public function showSnippet($request, $unique_id): JsonResponse|SnippetResource
     {
         $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
+
+        $password = $request->input('password');
+
+        if ($snippet->password && $snippet->password !== $password ) {
+            return response()->json(['message' => 'Incorrect password'], 403);
+        }
+
         if (!$snippet || (!$snippet->is_public && $snippet->user_id !== auth('sanctum')->id())) {
             return response()->json(['message' => 'Paste not found or private'], 404);
         }

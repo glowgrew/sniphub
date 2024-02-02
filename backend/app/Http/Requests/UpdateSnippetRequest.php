@@ -26,6 +26,7 @@ class UpdateSnippetRequest extends FormRequest
             'title' => ['sometimes', 'string'],
             'body' => ['sometimes', 'string'],
             'categoryId' => ['sometimes', 'exists:categories,id'],
+            'password' => ['sometimes','string'],
             'isPublic' => ['boolean', 'sometimes'],
             'expirationTime' => ['sometimes', 'date'],
         ];
