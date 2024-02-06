@@ -26,6 +26,7 @@ class SnippetResource extends JsonResource
                 : null,
             'userId' => $this->user_id,
             'views' => $this->views,
+            'password' => $this->password,
             'burnAfterRead' => $this->burn_after_read,
             'isPublic' => $this->is_public,
             'uniqueId' => $this->unique_id,

@@ -3,19 +3,16 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\StoreAuthRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(StoreAuthRequest $request)
     {
-        $data = $request->validate([
-            'name' => ['string', 'max:50', 'required'],
-            'email' => ['email', 'required'],
-            'password' => ['required', 'min:6']
-        ]);
+        $data = $request->validated();
 
         $user = User::query()->create($data);
 
@@ -23,7 +20,7 @@ class AuthController extends Controller
             'data' => $user,
             'token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer'
-        ]);
+        ], 201);
     }
 
     public function login(Request $request)
@@ -33,7 +30,7 @@ class AuthController extends Controller
             return response()->json([
                 'token' => $user->createToken('api_token')->plainTextToken,
                 'token_type' => 'Bearer'
-            ]);
+            ], 200);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);

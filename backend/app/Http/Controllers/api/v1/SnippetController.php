@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSnippetRequest;
-use App\Http\Requests\UpdateSnippetRequest;
-use App\Http\Resources\api\v1\Snippet\SnippetCollection;
-use App\Models\User;
+use App\Http\Requests\Snippet\StoreSnippetRequest;
+use App\Http\Requests\Snippet\UpdateSnippetRequest;
 use App\Services\SnippetService;
 use Illuminate\Http\Request;
 
@@ -30,11 +28,18 @@ class SnippetController extends Controller
 
     public function show(Request $request, $unique_id)
     {
+        if (!$this->snippetService->checkExists($unique_id)) {
+            return response()->json(['message' => 'Snippet not found'], 404);
+        }
+
         return $this->snippetService->showSnippet($request, $unique_id);
     }
 
     public function update(UpdateSnippetRequest $request, $unique_id)
     {
+        if (!$this->snippetService->checkExists($unique_id)) {
+            return response()->json(['message' => 'Snippet not found'], 404);
+        }
         if (!$this->snippetService->validate($request, $unique_id, 'update')) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
@@ -44,6 +49,9 @@ class SnippetController extends Controller
 
     public function destroy(Request $request, $unique_id)
     {
+        if (!$this->snippetService->checkExists($unique_id)) {
+            return response()->json(['message' => 'Snippet not found'], 404);
+        }
         if (!$this->snippetService->validate($request, $unique_id, 'delete')) {
             return response()->json(['message' => 'Forbidden'], 403);
         }

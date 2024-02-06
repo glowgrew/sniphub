@@ -28,6 +28,7 @@ class Snippet extends Model
         'views' => 0,
         'burn_after_read' => false,
         'is_public' => true,
+        'password' => null,
     ];
 
     public function category(): BelongsTo

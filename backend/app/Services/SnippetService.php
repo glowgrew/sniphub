@@ -31,16 +31,16 @@ class SnippetService
 
     public function showSnippet($request, $unique_id): JsonResponse|SnippetResource
     {
-        $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
+        $snippet = Snippet::query()->where('unique_id', $unique_id)->first();
 
         $password = $request->input('password');
 
-        if ($snippet->password && $snippet->password !== $password ) {
+        if ($snippet->password && $snippet->password !== $password) {
             return response()->json(['message' => 'Incorrect password'], 403);
         }
 
         if (!$snippet || (!$snippet->is_public && $snippet->user_id !== auth('sanctum')->id())) {
-            return response()->json(['message' => 'Paste not found or private'], 404);
+            return response()->json(['message' => 'Paste not found or private'], 403);
         }
 
         if ($snippet->burn_after_read) {
@@ -64,7 +64,7 @@ class SnippetService
 
     public function deleteSnippet($unique_id): JsonResponse
     {
-        $snippet = Snippet::query()->where('unique_id', $unique_id)->firstOrFail();
+        $snippet = Snippet::query()->where('unique_id', $unique_id)->first();
         $snippet->delete();
         return response()->json(['message' => 'Snippet deleted successfully'], 200);
     }
@@ -83,5 +83,14 @@ class SnippetService
             }
             return true;
         }
+    }
+
+    public function checkExists($unique_id): bool
+    {
+        $snippet = Snippet::query()->where('unique_id', $unique_id)->first();
+        if ($snippet) {
+            return true;
+        }
+        return false;
     }
 }

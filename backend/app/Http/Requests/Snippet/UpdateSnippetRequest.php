@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Snippet;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSnippetRequest extends FormRequest
+class UpdateSnippetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,12 @@ class StoreSnippetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string'],
-            'body' => ['required', 'string'],
-            'categoryId' => ['exists:categories,id'],
-            'password' => ['string'],
-            'burnAfterRead' => ['boolean'],
-            'isPublic' => ['boolean'],
-            'expirationTime' => ['required', 'date'],
+            'title' => ['sometimes', 'string'],
+            'body' => ['sometimes', 'string'],
+            'categoryId' => ['sometimes', 'exists:categories,id'],
+            'password' => ['sometimes','string'],
+            'isPublic' => ['boolean', 'sometimes'],
+            'expirationTime' => ['sometimes', 'date'],
         ];
     }
 }
