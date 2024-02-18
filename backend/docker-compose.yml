@@ -5,7 +5,7 @@ services:
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-                NODE_VERSION: '20.11.0'
+                NODE_VERSION: '20'
         image: sail-8.3/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
@@ -49,7 +49,7 @@ services:
             retries: 3
             timeout: 5s
     mysql_tests:
-        image: 'mysql:5.7'
+        image: 'mysql:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3307}:3306'
         environment:

@@ -1,1 +1,0 @@
-# SnipHub Frontend
