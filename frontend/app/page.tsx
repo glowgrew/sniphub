@@ -17,7 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Switch } from "@/components/ui/switch";
 
 const formSchema = z.object({
-    title: z.string().optional(),
+    title: z.string().min(1, 'Укажите заголовок сниппета').optional(),
     body: z.string().trim().min(1, 'Нельзя опубликовать пустой сниппет').max(100_000, 'Слишком длинный сниппет'),
     category_id: z.number().gte(0, 'Выберите категорию сниппета из списка').refine(async (input) => {
         const res = await fetch('http://localhost/api/categories', {
@@ -32,7 +32,8 @@ const formSchema = z.object({
             }
             return response.json() as Promise<CategoryResponse>;
         });
-        return res
+        const category = res.data.find(category => category.id === input);
+        return !!category;
     }).optional(),
     burnAfterRead: z.boolean().default(false).optional(),
     expirationTime: z.coerce.date().refine((data) => data > new Date(), "Дата удаления сниппета должна отличаться от текущей.").transform(arg => arg.toISOString().split('T')[0]),
@@ -68,7 +69,7 @@ export default function Home() {
         });
         const data = await res.json();
         await new Promise<void>((resolve) => {
-            setTimeout(resolve, 1000);
+            setTimeout(resolve, 300);
         });
         console.log(JSON.stringify(data));
         if (res.ok) {

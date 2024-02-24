@@ -20,12 +20,13 @@ export const metadata: Metadata = {
 export function Navbar() {
     return (
         <>
-            <nav className="flex justify-between items-center w-full p-2 md:p-4 lg:p-8">
-                <div className={ "hidden sm:flex" }>
+            <div className="invisible sm:visible relative w-full overflow-hidden md:p-4 lg:p-8">
+                <div className="float-left">
                     <ModeToggle/>
                 </div>
-                <div className="flex justify-center flex-grow">
-                    <div className="logo-container w-auto h-auto">
+
+                <div className="logo-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <div>
                         <a className="block dark:hidden" href="/">
                             <Image src="/logo_dark.svg" alt="SnipHub Logo" width={ 256 } height={ 32 }/>
                         </a>
@@ -34,8 +35,22 @@ export function Navbar() {
                         </a>
                     </div>
                 </div>
-            </nav>
+            </div>
+
         </>
+    )
+}
+
+export interface BgGridProps {
+    children?: React.ReactNode;
+}
+
+export function BgGrid({children}: BgGridProps) {
+    return (
+        <div
+            className="absolute inset-0 h-full w-full bg-white dark:bg-slate-950 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#0f172a_1px,transparent_1px)] [background-size:16px_16px]">
+            { children }
+        </div>
     )
 }
 
@@ -55,10 +70,12 @@ export default function RootLayout({
                 }
             >
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                <Navbar/>
-                <div className="relative min-h-screen">
-                    <div className="flex-1">{ children }</div>
-                </div>
+                <BgGrid>
+                    <Navbar/>
+                    <div className="relative min-h-screen">
+                        <div className="flex-1">{ children }</div>
+                    </div>
+                </BgGrid>
             </ThemeProvider>
             </body>
             </html>
